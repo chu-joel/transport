@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Button} from 'react-native';
+import { styles } from '../styles/styles';
 export const SettingsScreen = ({ navigation, route }) => {
     return (
             
-            <Text><p>"Settings screen"</p></Text>
+            <Text style = {styles.h1}>Settings screen</Text>
         )
   };

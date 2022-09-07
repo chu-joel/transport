@@ -1,18 +1,32 @@
 import { Button} from 'react-native';
-import { View, Text, StyleSheet } from 'react-native';
-import { styles } from '../styles/styles';
 import * as React from 'react';
+import { HeadingContainer, StyledHeader, ButtonContainer, MapContainer} from '../components/homeScreen.styles';
+import { PageContainer, styles } from '../styles/styles';
+import MapView from 'react-native-maps';
+import { DEFAULTLONGLAT } from '../styles/constants';
 
 export const HomeScreen = ({ navigation }) => {
     return (
-      <View style = {styles.div}>
-        <Button
-          title="Go to Jane's profile"
-          onPress={() =>
-            navigation.navigate('Transit', { name: 'Jane' })
-          }
-        />
-     </View>
+      <PageContainer>
+        <HeadingContainer>
+          <StyledHeader>
+            Select your destination
+          </StyledHeader>
+        </HeadingContainer>
+        <MapContainer>
+          <MapView style={styles.map} 
+          initialRegion={DEFAULTLONGLAT}/>
+        </MapContainer>
+        <ButtonContainer>
+          <Button style = {styles.appButtonContainer}
+            title="Start Journey"
+            onPress={() =>
+              navigation.navigate('Transit', { name: 'Jane' })
+            }
+          />
+        </ButtonContainer>
+        
+     </PageContainer>
         
       
     );
