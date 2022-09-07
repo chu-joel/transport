@@ -3,7 +3,7 @@ export const TransitScreen = ({ navigation, route }) => {
     return (
             <Button title = "Some button to click on"
             onPress={() =>
-            navigation.navigate('Home')
+            navigation.navigate('HomeScreen')
             
             }
             />
