@@ -19,7 +19,4 @@ export const ButtonContainer = styled.View`
     padding: 10px;
 `
 
-export const MapContainer = styled.View`
-    flex-grow:1;
-    background-color:${Colors.White100};
-`
+

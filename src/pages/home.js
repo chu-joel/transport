@@ -1,9 +1,12 @@
 import { Button} from 'react-native';
 import * as React from 'react';
-import { HeadingContainer, StyledHeader, ButtonContainer, MapContainer} from '../components/homeScreen.styles';
+import { HeadingContainer, StyledHeader, ButtonContainer} from '../components/homeScreen.styles';
+import { MapContainer } from '../components/map';
 import { PageContainer, styles } from '../styles/styles';
 import MapView from 'react-native-maps';
 import { DEFAULTLONGLAT } from '../styles/constants';
+import { Marker, Circle } from 'react-native-maps';
+import { setPin, pin } from '../context/context';
 
 export const HomeScreen = ({ navigation }) => {
     return (
@@ -15,7 +18,19 @@ export const HomeScreen = ({ navigation }) => {
         </HeadingContainer>
         <MapContainer>
           <MapView style={styles.map} 
-          initialRegion={DEFAULTLONGLAT}/>
+          initialRegion={DEFAULTLONGLAT}>
+             <Marker 
+             draggable = {true}
+            coordinate={pin}
+            onDragEnd = {(e) => {
+              setPin({
+                latitude: e.nativeEvent.coordinate.latitude,
+                longitude: e.nativeEvent.coordinate.longitude,
+              })
+            }}
+              />
+              <Circle center={pin} radius={1000}/>
+          </MapView>
         </MapContainer>
         <ButtonContainer>
           <Button style = {styles.appButtonContainer}
