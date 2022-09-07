@@ -6,9 +6,14 @@ import { PageContainer, styles } from '../styles/styles';
 import MapView from 'react-native-maps';
 import { DEFAULTLONGLAT } from '../styles/constants';
 import { Marker, Circle } from 'react-native-maps';
-import { setPin, pin } from '../context/context';
+
 
 export const HomeScreen = ({ navigation }) => {
+   const [pin, setPin] = React.useState({
+    latitude: -41.293189,
+    longitude: 174.7779695,
+  });
+  
     return (
       <PageContainer>
         <HeadingContainer>
@@ -29,14 +34,14 @@ export const HomeScreen = ({ navigation }) => {
               })
             }}
               />
-              <Circle center={pin} radius={1000}/>
+              <Circle center={pin} radius={200}/>
           </MapView>
         </MapContainer>
         <ButtonContainer>
           <Button style = {styles.appButtonContainer}
             title="Start Journey"
             onPress={() =>
-              navigation.navigate('Transit', { name: 'Jane' })
+              navigation.navigate('Transit', pin.longitude, pin.latitude)
             }
           />
         </ButtonContainer>

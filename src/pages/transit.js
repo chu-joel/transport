@@ -1,11 +1,19 @@
 import { StyleSheet, Text, View, Button} from 'react-native';
-export const TransitScreen = ({ navigation, route }) => {
+import { styles } from '../styles/styles';
+export const TransitScreen = ({ navigation, longitude, latitude }) => {
+    console.log(latitude)
     return (
-            <Button title = "Some button to click on"
+            <View>
+                <Text style={styles.h1}>
+                    
+                   Something {longitude}
+                </Text>
+                <Button title = "Some button to click on"
             onPress={() =>
             navigation.navigate('HomeScreen')
             
             }
-            />
+            /></View>
+            
         )
   };
