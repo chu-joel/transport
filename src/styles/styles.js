@@ -30,23 +30,20 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    
     StopButtonContainer: {
-      backgroundColor: Colors.Red100,
+      backgroundColor: Colors.Red,
       color: Colors.White100,
-      borderRadius: 50,
-      padding: 10,
-      marginTop: 20,
-      width: 100,
-      height: 100,
-      overflow: 'hidden',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
     
-    map: {
+    HomeMap: {
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height*0.7
-      
+    },
+
+    TransitMap: {
+      width: Dimensions.get('window').width*0.8,
+      height: Dimensions.get('window').height*0.2
     }
     
 });

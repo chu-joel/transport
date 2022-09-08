@@ -22,7 +22,7 @@ export const HomeScreen = ({ navigation }) => {
           </StyledHeader>
         </HeadingContainer>
         <MapContainer>
-          <MapView style={styles.map} 
+          <MapView style={styles.HomeMap} 
           initialRegion={DEFAULTLONGLAT}>
              <Marker 
              draggable = {true}
@@ -38,7 +38,7 @@ export const HomeScreen = ({ navigation }) => {
           </MapView>
         </MapContainer>
         <ButtonContainer>
-          <Button style = {styles.StartButtonContainer}
+          <Button style = {styles.appButtonContainer}
             title="Start Journey"
             onPress={() =>
               navigation.navigate('Transit', {latitude: pin.latitude, longitude: pin.longitude})}
