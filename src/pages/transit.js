@@ -53,7 +53,7 @@ export const TransitScreen = ({ navigation, route }) => {
             <Button style = {styles.StopButtonContainer}
                 title = "Stop"
                 onPress={() =>
-                navigation.navigate('Home')}
+                navigation.navigate('Select Destination')}
                 />
         </ButtonContainer>
         </PageContainer>

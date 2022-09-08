@@ -41,7 +41,7 @@ export const HomeScreen = ({ navigation }) => {
           <Button style = {styles.appButtonContainer}
             title="Start Journey"
             onPress={() =>
-              navigation.navigate('Transit', {latitude: pin.latitude, longitude: pin.longitude})}
+              navigation.navigate('In Transit', {latitude: pin.latitude, longitude: pin.longitude})}
           />
         </ButtonContainer>
         

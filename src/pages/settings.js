@@ -1,8 +1,14 @@
 import { StyleSheet, Text, View, Button} from 'react-native';
-import { styles } from '../styles/styles';
+import { styles, PageContainer } from '../styles/styles';
+import { StyledTransitHeader } from '../components/transitScreen.styles';
+import { HeadingContainer } from '../components/homeScreen.styles';
+
 export const SettingsScreen = ({ navigation, route }) => {
     return (
-            
-            <Text style = {styles.h1}>Settings screen</Text>
+            <PageContainer>
+                <HeadingContainer>
+                    <StyledTransitHeader>Settings screen</StyledTransitHeader>
+                </HeadingContainer>
+            </PageContainer>
         )
   };

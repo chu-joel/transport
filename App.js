@@ -8,6 +8,8 @@ import { MyTabs } from './src/navigation/navigation';
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SettingsScreen } from './src/pages/settings';
+import { Colors } from './src/styles/constants';
+import { HomePage } from './src/pages/homeParent';
 
 
 export default function App() {
@@ -23,12 +25,21 @@ const Tab = createBottomTabNavigator();
 
 const MyStack = () => {
   return (
-    <NavigationContainer theme= { mainTheme }>
-      <Tab.Navigator >
-        {/* <Tab.Screen name="MyTabs"component={MyTabs} options={{ headerShown: false }}/> */}
-        <Tab.Screen name="Home"component={HomeScreen}/>
-        <Tab.Screen name="Transit" component={TransitScreen}/>
-        <Tab.Screen name="Settings" component={SettingsScreen}/>
+    <NavigationContainer options={{
+      headerShown: false,
+    }} theme= { mainTheme }>
+      <Tab.Navigator
+      
+      screenOptions={{
+        tabBarInactiveBackgroundColor: `${Colors.Grey100}`,
+        tabBarActiveBackgroundColor:`${Colors.Grey100}`,
+        tabBarActiveTintColor: `${Colors.Blue100}`,
+        tabBarInactiveTintColor: `${Colors.White100}`,
+        
+      }}
+        >
+        <Tab.Screen options={{headerShown: false}} name="Home"component={HomePage}/>
+        <Tab.Screen options={{headerShown: false}}  name="Settings" component={SettingsScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );

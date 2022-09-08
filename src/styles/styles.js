@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
 
 export const PageContainer = styled.View`
     background-color: ${Colors.Grey100};
+    padding-top:30px;
 `
 
 
@@ -59,5 +60,6 @@ export const mainTheme = {
     ...DefaultTheme.colors,
     background: Colors.Grey100,
     color: Colors.White100,
-  }
+  },
+  
 };

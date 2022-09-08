@@ -10,13 +10,14 @@ export const HeadingContainer = styled.View`
     padding: 10px;
 `
 export const StyledHeader = styled.Text`
-  fontSize:24px;
+  fontSize:30px;
   color: ${Colors.White100};
 `;
 
 export const ButtonContainer = styled.View`
     margin: auto;
-    padding: 10px;
+    padding: 20px;
+    // background-color: ${Colors.Blue100}
 `
 
 
