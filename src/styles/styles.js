@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
       fontSize:18,
       color: "#FFFFFF",
     },
-    appButtonContainer: {
+    StartButtonContainer: {
       backgroundColor: Colors.Blue100,
       color: Colors.White100,
       borderRadius: 50,
@@ -30,6 +30,19 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    StopButtonContainer: {
+      backgroundColor: Colors.Red100,
+      color: Colors.White100,
+      borderRadius: 50,
+      padding: 10,
+      marginTop: 20,
+      width: 100,
+      height: 100,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    
     map: {
       width: Dimensions.get('window').width,
       height: Dimensions.get('window').height*0.7

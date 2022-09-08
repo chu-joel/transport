@@ -2,7 +2,8 @@ export const Colors = {
     Grey100: '#1E1E1E',
     White100: '#FFFFFF',
     Black100: '#000000',
-    Blue100: '#207FEE'
+    Blue100: '#207FEE',
+    Red100: '#E03B3B'
 }
 
 export const DEFAULTLONGLAT = 
