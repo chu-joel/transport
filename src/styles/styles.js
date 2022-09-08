@@ -21,19 +21,25 @@ export const styles = StyleSheet.create({
     StartButtonContainer: {
       backgroundColor: Colors.Blue100,
       color: Colors.White100,
-      borderRadius: 50,
-      padding: 10,
+      borderRadius: 20,
+      padding: 20,
       marginTop: 20,
       width: 100,
       height: 100,
       overflow: 'hidden',
       alignItems: 'center',
       justifyContent: 'center',
+      flex:1,
     },
     
     StopButtonContainer: {
-      backgroundColor: Colors.Red,
-      color: Colors.White100,
+      backgroundColor: '#00aeef',
+      borderColor: 'red',
+      borderWidth: 5,
+      borderRadius: 15,
+    },
+    container: {
+      flex:1,
     },
     
     HomeMap: {
@@ -44,7 +50,32 @@ export const styles = StyleSheet.create({
     TransitMap: {
       width: Dimensions.get('window').width*0.8,
       height: Dimensions.get('window').height*0.2
-    }
+    },
+
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      width:'100%',
+      marginTop: 22
+    },
+    modalView: {
+      margin: 20,
+      backgroundColor: Colors.Grey80,
+      borderRadius: 20,
+      paddingHorizontal: 100,
+      paddingTop: 300,
+      paddingVertical: 200,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5
+    },
     
 });
 

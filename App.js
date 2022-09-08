@@ -9,7 +9,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SettingsScreen } from './src/pages/settings';
 import { Colors } from './src/styles/constants';
-import { HomePage } from './src/pages/homeParent';
+import { HomePage } from './src/navigation/navigation';
 
 
 export default function App() {

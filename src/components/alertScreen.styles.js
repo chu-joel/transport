@@ -3,21 +3,16 @@ import { Colors } from '../styles/constants';
 import { styles } from '../styles/styles';
 import { Dimensions } from 'react-native';
 
-export const HeadingContainer = styled.View`
+export const AlertPageContainer = styled.View`
     text-align: center; 
     background-color: ${Colors.Grey100};
-    margin: auto;
-    padding: 10px;
+    width:100%;
+    height:100%
 `
-export const StyledHeader = styled.Text`
+export const AlertButtonContainer = styled.Text`
   fontSize:30px;
   color: ${Colors.White100};
 `;
 
-export const ButtonContainer = styled.View`
-    margin: auto;
-    padding: 15px;
-    // background-color: ${Colors.Blue100}
-`
 
 
