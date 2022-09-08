@@ -26,13 +26,13 @@ export const HomeScreen = ({ navigation }) => {
           initialRegion={DEFAULTLONGLAT}>
              <Marker 
              draggable = {true}
-            coordinate={pin}
-            onDragEnd = {(e) => {
-              setPin({
-                latitude: e.nativeEvent.coordinate.latitude,
-                longitude: e.nativeEvent.coordinate.longitude,
-              })
-            }}
+              coordinate={pin}
+              onDragEnd = {(e) => {
+                setPin({
+                  latitude: e.nativeEvent.coordinate.latitude,
+                  longitude: e.nativeEvent.coordinate.longitude,
+                })
+              }}
               />
               <Circle center={pin} radius={200}/>
           </MapView>

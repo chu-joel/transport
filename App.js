@@ -6,6 +6,8 @@ import { HomeScreen } from './src/pages/home';
 import { mainTheme } from './src/styles/styles';
 import { MyTabs } from './src/navigation/navigation';
 import * as React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SettingsScreen } from './src/pages/settings';
 
 
 export default function App() {
@@ -17,16 +19,17 @@ export default function App() {
 
 
 
-const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const MyStack = () => {
   return (
     <NavigationContainer theme= { mainTheme }>
-      <Stack.Navigator >
-        <Stack.Screen name="MyTabs"component={MyTabs} options={{ headerShown: false }}/>
-        <Stack.Screen name="HomeScreen"component={HomeScreen}/>
-        <Stack.Screen name="Transit" component={TransitScreen}/>
-      </Stack.Navigator>
+      <Tab.Navigator >
+        {/* <Tab.Screen name="MyTabs"component={MyTabs} options={{ headerShown: false }}/> */}
+        <Tab.Screen name="Home"component={HomeScreen}/>
+        <Tab.Screen name="Transit" component={TransitScreen}/>
+        <Tab.Screen name="Settings" component={SettingsScreen}/>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };

@@ -7,18 +7,13 @@ import MapView from 'react-native-maps';
 import { Colors, DEFAULTLONGLAT } from '../styles/constants';
 import { Marker, Circle } from 'react-native-maps';
 import React from 'react';
+import { render } from 'react-dom';
 
 export const TransitScreen = ({ navigation, route }) => {
-    const [location, setLocation] = React.useState({
-        latitude: -41.293189,
-        longitude: 174.7779695,
-      });
-
       const getLocation = () => {
         return getDeviceCurrentLocation();
-      }
+      };
       
-
 
     return (
         <PageContainer>
@@ -26,8 +21,8 @@ export const TransitScreen = ({ navigation, route }) => {
             <StyledTransitHeader>
                 In Transit
             </StyledTransitHeader>
-          </HeadingContainer>
-          <MapContainer>
+            </HeadingContainer>
+            <MapContainer>
             <MapView style={styles.TransitMap} 
             initialRegion={{
                 latitude: route.params.latitude,
@@ -50,17 +45,19 @@ export const TransitScreen = ({ navigation, route }) => {
         </MapContainer>
             <View>
                 <Text style={styles.h1}>
-                   Set to Vibrate within 1 Km of destination
-                   
+                    Set to Vibrate within 1 Km of destination
+                    
                 </Text>
             </View>
             <ButtonContainer>
             <Button style = {styles.StopButtonContainer}
                 title = "Stop"
                 onPress={() =>
-                navigation.navigate('HomeScreen')}
+                navigation.navigate('Home')}
                 />
         </ButtonContainer>
         </PageContainer>
         )
+      
+    
   };
