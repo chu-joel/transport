@@ -14,3 +14,5 @@ export const DEFAULTLONGLAT =
     latitudeDelta: 0.019,
     longitudeDelta: 0.019,
 }
+
+export const ShapeDefaults = {borderRadius: 10}

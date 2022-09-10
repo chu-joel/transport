@@ -1,4 +1,4 @@
-import { Button} from 'react-native';
+import {TouchableOpacity, View, Text} from 'react-native';
 import * as React from 'react';
 import { HeadingContainer, StyledHeader, ButtonContainer} from '../components/homeScreen.styles';
 import { MapContainer } from '../components/map';
@@ -37,13 +37,13 @@ export const HomeScreen = ({ navigation }) => {
               <Circle center={pin} radius={200}/>
           </MapView>
         </MapContainer>
-        <ButtonContainer>
-          <Button style = {styles.StartButtonContainer}
-            title="Start Journey"
-            onPress={() =>
-              navigation.navigate('In Transit', {latitude: pin.latitude, longitude: pin.longitude})}
-          />
-        </ButtonContainer>
+         <View style={styles.ButtonContainer}>
+          <TouchableOpacity onPress={() =>
+                navigation.navigate('In Transit', {latitude: pin.latitude, longitude: pin.longitude})}
+                style={styles.StartButtonContainer}>
+            <Text style={styles.h2}>START JOURNEY</Text>
+          </TouchableOpacity>
+        </View> 
         
      </PageContainer>
         

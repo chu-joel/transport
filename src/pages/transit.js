@@ -1,21 +1,41 @@
-import { StyleSheet,TouchableOpacity, Text, View, Pressable, Modal, Button} from 'react-native';
+import { StyleSheet,TouchableOpacity, TouchableHighlight, Text, View, Pressable, Modal, Button} from 'react-native';
 import { styles, PageContainer } from '../styles/styles';
 import { HeadingContainer, ButtonContainer } from '../components/homeScreen.styles';
-import { StyledTransitHeader } from '../components/transitScreen.styles';
+import { StyledTransitHeader, InfoContainer, InfoLabelContainer, TextContainer } from '../components/transitScreen.styles';
 import { MapContainer } from '../components/map';
 import MapView from 'react-native-maps';
 import { Colors, DEFAULTLONGLAT } from '../styles/constants';
 import { Marker, Circle } from 'react-native-maps';
-import React, { useState }  from 'react';
-import { render } from 'react-dom';
+import React, {useRef, useEffect, useState }  from 'react';
+import { Stopwatch } from 'react-native-stopwatch-timer';
+
+const options = {
+    container: {
+      backgroundColor: Colors.Grey80,
+      padding: 10,
+      borderRadius: 5,
+      width: 150,
+      alignItems: 'center',
+    },
+    text: {
+      fontSize: 25,
+      color: '#FFF',
+    },
+  };
 
 export const TransitScreen = ({ navigation, route }) => {
-      const getLocation = () => {
-        return getDeviceCurrentLocation();
-      };
-      const [modalVisible, setModalVisible] = useState(false);
-      
-      
+    
+
+    //   const getLocation = () => {
+    //     return getDeviceCurrentLocation();
+    //   };
+
+    // Get location of user
+    
+
+
+    const [modalVisible, setModalVisible] = useState(false); 
+    const [isStopwatchStart, setIsStopwatchStart] = useState(true);
 
     return (
         <PageContainer>
@@ -68,28 +88,42 @@ export const TransitScreen = ({ navigation, route }) => {
                 }} radius={50}/>
             </MapView>
         </MapContainer>
-            <View>
+            <TextContainer>
                 <Text style={styles.h1}>
                     Set to Vibrate within 1 Km of destination
-                    
                 </Text>
-            </View>
-            <ButtonContainer>
-            <Button style = {styles.StopButtonContainer}
-                title = "Stop"
-                onPress={() =>
-                navigation.navigate('Select Destination')}
-                />
-            <View stype = {styles.container}>
-            <Button style = {styles.StopButtonContainer}
-                title = "Alert"
-                onPress={() => setModalVisible(true)}
-                />
-            </View>
+            </TextContainer>
             
+            <InfoContainer>
+                <View>
+                    <Stopwatch
+                        secs
+                        start={isStopwatchStart}
+                        options={options}
+                    />
+                    <InfoLabelContainer>
+                        <Text style={styles.h2}>Duration</Text>
+                    </InfoLabelContainer>
+                </View>
+            </InfoContainer>
 
+            <View style={{height:20}}/>
+            <InfoContainer>
+                <View style={options.container}>
+                    <Text style={styles.transitNumeral}>100.2Km</Text>
+                    <InfoLabelContainer>
+                        <Text style={styles.h2}>Distance</Text>
+                    </InfoLabelContainer>
+                </View>
+            </InfoContainer>
 
-        </ButtonContainer>
+        <View style={styles.ButtonContainer}>
+          <TouchableOpacity onPress={() => setModalVisible(true)}
+                style={styles.StopButtonContainer}>
+            <Text style={styles.h2}>STOP</Text>
+          </TouchableOpacity>
+        </View> 
+        
         </PageContainer>
         )
       

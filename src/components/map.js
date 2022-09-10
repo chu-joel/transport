@@ -14,4 +14,5 @@ export const MapContainer = styled.View`
     flex-grow:1;
     background-color:${Colors.White100};
     margin:auto;
+    borderRadius: 10px;
 `
