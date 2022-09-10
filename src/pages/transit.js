@@ -1,13 +1,15 @@
-import { StyleSheet,TouchableOpacity, TouchableHighlight, Text, View, Pressable, Modal, Button} from 'react-native';
+import { SafeAreaView,TouchableOpacity, Platform, Text, View, Pressable, Modal, PermissionsAndroid} from 'react-native';
 import { styles, PageContainer } from '../styles/styles';
 import { HeadingContainer, ButtonContainer } from '../components/homeScreen.styles';
 import { StyledTransitHeader, InfoContainer, InfoLabelContainer, TextContainer } from '../components/transitScreen.styles';
 import { MapContainer } from '../components/map';
-import MapView from 'react-native-maps';
+import MapView, { Polyline } from 'react-native-maps';
 import { Colors, DEFAULTLONGLAT } from '../styles/constants';
 import { Marker, Circle } from 'react-native-maps';
 import React, {useRef, useEffect, useState }  from 'react';
 import { Stopwatch } from 'react-native-stopwatch-timer';
+import * as Location from 'expo-location';
+import {getDistance} from 'geolib';
 
 const options = {
     container: {
@@ -24,20 +26,59 @@ const options = {
   };
 
 export const TransitScreen = ({ navigation, route }) => {
-    
+    const [location, setLocation] = useState({
+        latitude: -41.293189,
+        longitude: 174.7779695,
+      });
+    const [errorMsg, setErrorMsg] = useState(null);
+    const [remaining, setRemaining] = useState(200);
 
-    //   const getLocation = () => {
-    //     return getDeviceCurrentLocation();
-    //   };
+    const getLocation = () => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+          }
+    
+          Location.setGoogleApiKey("AIzaSyBjVOnhjYP-1FgCghqtxqt7A6Hpd4LnGdg");
+    
+          let { coords } = await Location.getCurrentPositionAsync();
+          setLocation({latitude: coords.latitude,
+                        longitude: coords.longitude,});
+        setRemaining(parseFloat(getDistance({
+            latitude:route.params.latitude,
+            longitude:route.params.longitude},
+            {latitude: coords.latitude,
+            longitude: coords.longitude})/1000).toFixed(1)
+        )
+        //   if (coords) {
+        //     let { longitude, latitude } = coords;
+    
+            // let regionName = await Location.reverseGeocodeAsync({
+            //   longitude,
+            //   latitude,
+            // });
+            // setAddress(regionName[0]);
+        //   }
+        })();
+      };
 
     // Get location of user
-    
+    useEffect(() => {
+        
+        const interval = setInterval(() => {
+            getLocation();
+        }, 100);
+        return () => clearInterval(interval);
+    }, []);
+
 
 
     const [modalVisible, setModalVisible] = useState(false); 
     const [isStopwatchStart, setIsStopwatchStart] = useState(true);
 
     return (
+        getLocation,
         <PageContainer>
             <View style={styles.centeredView}>
       <Modal
@@ -69,9 +110,9 @@ export const TransitScreen = ({ navigation, route }) => {
             </HeadingContainer>
             <MapContainer>
             <MapView style={styles.TransitMap} 
-            initialRegion={{
-                latitude: route.params.latitude,
-                longitude: route.params.longitude,
+            region={{
+                latitude: location.latitude,
+                longitude: location.longitude,
                 latitudeDelta: DEFAULTLONGLAT.longitudeDelta,
                 longitudeDelta: DEFAULTLONGLAT.latitudeDelta,
                 }
@@ -83,11 +124,20 @@ export const TransitScreen = ({ navigation, route }) => {
                 }}
                 />
                 <Circle fillColor={Colors.Blue100} center={{
-                    latitude: route.params.latitude,
-                    longitude: route.params.longitude,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
                 }} radius={50}/>
+                <Polyline
+                    coordinates={[
+                        { latitude: route.params.latitude, longitude: route.params.longitude, },
+                        { latitude: location.latitude, longitude: location.longitude, },
+                    ]}
+                    strokeColor="#000"
+                    strokeWidth={1}
+                />
             </MapView>
         </MapContainer>
+        
             <TextContainer>
                 <Text style={styles.h1}>
                     Set to Vibrate within 1 Km of destination
@@ -110,7 +160,7 @@ export const TransitScreen = ({ navigation, route }) => {
             <View style={{height:20}}/>
             <InfoContainer>
                 <View style={options.container}>
-                    <Text style={styles.transitNumeral}>100.2Km</Text>
+                    <Text style={styles.transitNumeral}>{remaining}Km</Text>
                     <InfoLabelContainer>
                         <Text style={styles.h2}>Distance</Text>
                     </InfoLabelContainer>

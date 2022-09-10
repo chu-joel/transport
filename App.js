@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Button} from 'react-native';
+import { StyleSheet, Text, View, Button, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { TransitScreen } from './src/pages/transit';
@@ -11,6 +11,8 @@ import { SettingsScreen } from './src/pages/settings';
 import { Colors } from './src/styles/constants';
 import { HomePage } from './src/navigation/navigation';
 
+LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreAllLogs();
 
 export default function App() {
   return (
