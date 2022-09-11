@@ -15,13 +15,5 @@ export const StyledHeader = styled.Text`
   color: ${Colors.White100};
 `;
 
-// export const ButtonContainer = styled.View`
-//     margin: auto;
-//     text-align: center; 
-//     padding: 40px;
-//     paddingVertical: 20px;
-//     borderRadius: 10px;
-//     background-color: ${Colors.White100}
-// `
 
 

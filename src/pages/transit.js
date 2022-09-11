@@ -1,4 +1,4 @@
-import { SafeAreaView,TouchableOpacity, Platform, Text, View, Pressable, Modal, PermissionsAndroid} from 'react-native';
+import { SafeAreaView,TouchableOpacity, Platform, Text, View, Pressable, Modal, PermissionsAndroid, Vibration} from 'react-native';
 import { styles, PageContainer } from '../styles/styles';
 import { HeadingContainer, ButtonContainer } from '../components/homeScreen.styles';
 import { StyledTransitHeader, InfoContainer, InfoLabelContainer, TextContainer } from '../components/transitScreen.styles';
@@ -10,6 +10,7 @@ import React, { useEffect, useState }  from 'react';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import * as Location from 'expo-location';
 import {getDistance} from 'geolib';
+import { useSharedSettingState } from '../context/context';
 
 const options = {
     container: {
@@ -37,6 +38,15 @@ export const TransitScreen = ({ navigation, route }) => {
     const [isStopwatchStart, setIsStopwatchStart] = useState(true);
     const [time, setTime] = useState(0);
     const [ modalText, setModalText] = useState("None");
+    const [ ringing, setRinging] = useState(false);
+    const {distance, setDistance} = useSharedSettingState();
+    const {alertMode, setAlertMode} = useSharedSettingState();
+
+    const PATTERN = [
+        3 * 1000,
+        2* 1000,
+        1*1000
+      ];
 
     const getLocation = () => {
         (async () => {
@@ -66,11 +76,20 @@ export const TransitScreen = ({ navigation, route }) => {
         const interval = setInterval(() => {
             getLocation();
             setTime(time+1);
+            
+            // Check if user is within radius
+            if(parseFloat(remaining)<parseFloat(distance) &&
+             remaining!="N/A" && !ringing){
+                Vibration.vibrate(PATTERN, true);
+                setRinging(true)
+                setModalText("Your stop is approaching");
+                setModalVisible(true);
+            }
         }, 1000);
         return () => clearInterval(interval);
     }, [time]);
 
-    // Check if user is within radius
+    
 
 
   
@@ -105,7 +124,9 @@ export const TransitScreen = ({ navigation, route }) => {
                         <View style = {styles.SideBySideButtons}>
                             <View style={styles.ButtonContainer}>
                                 <TouchableOpacity onPress={() => {
-                                setModalVisible(false)}}
+                                setModalVisible(false);
+                                Vibration.cancel();}
+                            }
                                         style={[styles.StopButtonContainer, {width:100}]}>
                                     <Text style={styles.h2}>BACK</Text>
                                 </TouchableOpacity>
@@ -113,6 +134,7 @@ export const TransitScreen = ({ navigation, route }) => {
                             <View style={[styles.ButtonContainer, {paddingleft:10}]}>
                             <TouchableOpacity onPress={() => {setModalVisible(!modalVisible); 
                                 setModalText();
+                                Vibration.cancel();
                                 navigation.navigate('Trip Finished', {duration: time})}}
                                         style={[styles.StartButtonContainer, {marginLeft:60, width:100}]}>
                                     <Text style={styles.h2}>FINISH</Text>
@@ -159,7 +181,7 @@ export const TransitScreen = ({ navigation, route }) => {
         
             <TextContainer>
                 <Text style={styles.h1}>
-                    Set to Vibrate within 1 Km of destination
+                    Set to {alertMode} within {distance} Km of destination
                 </Text>
             </TextContainer>
             

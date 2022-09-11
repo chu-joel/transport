@@ -11,6 +11,7 @@ import { SettingsScreen } from './src/pages/settings';
 import { Colors } from './src/styles/constants';
 import { HomePage } from './src/navigation/navigation';
 
+
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
@@ -19,8 +20,6 @@ export default function App() {
       <MyStack></MyStack>
   );
 }
-
-
 
 
 const Tab = createBottomTabNavigator();
@@ -40,8 +39,8 @@ const MyStack = () => {
         
       }}
         >
-        <Tab.Screen options={{headerShown: false}} name="Home"component={HomePage}/>
-        <Tab.Screen options={{headerShown: false}}  name="Settings" component={SettingsScreen}/>
+        <Tab.Screen options={{headerShown: false, unmountOnBlur: false}} name="Home"component={HomePage}/>
+        <Tab.Screen options={{headerShown: false, unmountOnBlur: false}}  name="Settings" component={SettingsScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
