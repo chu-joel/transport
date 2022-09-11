@@ -49,4 +49,5 @@ export const SaveSettings = (distance, alertMethod) => {
     alertMode: alertMethod,
     distance: distance,
   });
+  return 0;
 };

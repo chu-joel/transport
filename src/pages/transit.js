@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { Stopwatch } from "react-native-stopwatch-timer";
 import * as Location from "expo-location";
 import { getDistance } from "geolib";
-import { useSharedSettingState } from "../context/context";
 import { Audio } from "expo-av";
 import Modal from "react-native-modal";
 import { MapStyles } from "../components/map.styles";

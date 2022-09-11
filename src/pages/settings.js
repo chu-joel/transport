@@ -5,6 +5,8 @@ import { useSharedSettingState, SaveSettings } from "../context/context";
 import { SettingStyles } from "../components/settings.styles";
 import { TextStyles } from "../styles/typography";
 import { getSettings } from "../context/context";
+import Modal from "react-native-modal";
+import { ModalStyles } from "../components/modal.styles";
 
 /**
  * Settings screen
@@ -18,7 +20,9 @@ export const SettingsScreen = ({ navigation, route }) => {
   const [distance, setDistance] = useState();
   const [alertMode, setAlertMode] = useState();
   const [number, onChangeNumber] = useState(distance);
-  const [vibrate, setVibrate] = useState();
+  const [vibrate, setVibrate] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     getSettings().then((result) => {
@@ -26,11 +30,30 @@ export const SettingsScreen = ({ navigation, route }) => {
       setAlertMode(result.alertMode);
       onChangeNumber(result.distance);
       setVibrate(result.alertMode == "vibrate" ? true : false);
+      setLoading(false);
     });
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setSaving(false);
+    }, 400);
+  });
+
   return (
     <View style={styles.PageContainer}>
+      <Modal animationType={"fade"} isVisible={loading}>
+        <View style={ModalStyles.LoadingModal}>
+          <Text style={TextStyles.title}>Retrieving Settings...</Text>
+          <Text style={TextStyles.h2}>Please Wait</Text>
+        </View>
+      </Modal>
+      <Modal animationType={"fade"} isVisible={saving}>
+        <View style={ModalStyles.LoadingModal}>
+          <Text style={TextStyles.title}>Saving Changes...</Text>
+          <Text style={TextStyles.h2}>Please Wait</Text>
+        </View>
+      </Modal>
       <View style={styles.headerContainer}>
         <Text style={TextStyles.header}>Settings</Text>
       </View>
@@ -90,6 +113,7 @@ export const SettingsScreen = ({ navigation, route }) => {
           onPress={() => {
             setDistance(number);
             vibrate ? setAlertMode("vibrate") : setAlertMode("sound");
+            setSaving(true);
             SaveSettings(number, alertMode);
           }}
           style={styles.StopButtonContainer}
