@@ -10,6 +10,11 @@ export const styles = StyleSheet.create({
       backgroundColor: '#000000',
       color: "#FFFFFF",
     },
+    title: {
+      fontSize:50,
+      color: "#FFFFFF",
+      
+    },
     h1: {
       fontSize:24,
       color: "#FFFFFF",
@@ -38,6 +43,14 @@ export const styles = StyleSheet.create({
       color: "#FFFFFF",
     },
     
+    DistanceAlertContainer: {
+      backgroundColor: Colors.Grey90,
+      marginTop:30,
+      margin:20,
+      padding:20,
+      borderRadius:10,
+    },
+
     StopButtonContainer: {
       backgroundColor: Colors.Red100,
       width: 200,
@@ -61,20 +74,30 @@ export const styles = StyleSheet.create({
     },
 
     centeredView: {
+      backgroundColor: 'rgba(0,0,0,0.5)',
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
       width:'100%',
-      marginTop: 22
+      marginTop: 22,
+      height:"100%",
+      elevation: 20,
+    },
+
+    SideBySideButtons:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingBottom:20,
+    justifyContent: 'space-between',
     },
 
     modalView: {
       margin: 20,
       backgroundColor: Colors.Grey80,
-      borderRadius: 20,
-      paddingHorizontal: 100,
-      paddingTop: 300,
-      paddingVertical: 200,
+      borderRadius: 10,
+      // paddingHorizontal: 100,
+      paddingTop: 20,
+      // paddingVertical: 200,
       alignItems: "center",
       shadowColor: "#000",
       shadowOffset: {
@@ -83,14 +106,14 @@ export const styles = StyleSheet.create({
       },
       shadowOpacity: 0.25,
       shadowRadius: 4,
-      elevation: 5
+      // elevation: 10000
     },
 
     ButtonContainer: {
       // flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      width:'100%',
+      // width:'100%',
       marginTop: 22
     },
     

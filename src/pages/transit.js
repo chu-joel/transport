@@ -6,7 +6,7 @@ import { MapContainer } from '../components/map';
 import MapView, { Polyline } from 'react-native-maps';
 import { Colors, DEFAULTLONGLAT } from '../styles/constants';
 import { Marker, Circle } from 'react-native-maps';
-import React, {useRef, useEffect, useState }  from 'react';
+import React, { useEffect, useState }  from 'react';
 import { Stopwatch } from 'react-native-stopwatch-timer';
 import * as Location from 'expo-location';
 import {getDistance} from 'geolib';
@@ -31,7 +31,12 @@ export const TransitScreen = ({ navigation, route }) => {
         longitude: 174.7779695,
       });
     const [errorMsg, setErrorMsg] = useState(null);
-    const [remaining, setRemaining] = useState(200);
+    const [remaining, setRemaining] = useState("N/A");
+    const [tripFinished, setTripFinished] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false); 
+    const [isStopwatchStart, setIsStopwatchStart] = useState(true);
+    const [time, setTime] = useState(0);
+    const [ modalText, setModalText] = useState("None");
 
     const getLocation = () => {
         (async () => {
@@ -51,58 +56,72 @@ export const TransitScreen = ({ navigation, route }) => {
             {latitude: coords.latitude,
             longitude: coords.longitude})/1000).toFixed(1)
         )
-        //   if (coords) {
-        //     let { longitude, latitude } = coords;
-    
-            // let regionName = await Location.reverseGeocodeAsync({
-            //   longitude,
-            //   latitude,
-            // });
-            // setAddress(regionName[0]);
-        //   }
         })();
       };
+    useEffect(()=>{getLocation();},[])
 
-    // Get location of user
+
+    // Get location of user every second
     useEffect(() => {
-        
         const interval = setInterval(() => {
             getLocation();
-        }, 100);
+            setTime(time+1);
+        }, 1000);
         return () => clearInterval(interval);
-    }, []);
+    }, [time]);
+
+    // Check if user is within radius
 
 
-
-    const [modalVisible, setModalVisible] = useState(false); 
-    const [isStopwatchStart, setIsStopwatchStart] = useState(true);
-
+  
     return (
         getLocation,
         <PageContainer>
-            <View style={styles.centeredView}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-            </View>
+                <Modal 
+                    backdropOpacity={1}
+            
+                Color={Colors.Black100}
+                    animationType="fade"
+                    transparent={true}
+                    // transparent={0.5}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                    }}
+                >
+                    <View style={styles.modalView}>
+                        <Text style={styles.h1}>{modalText}</Text>
+                        
+                        <View style={styles.DistanceAlertContainer}>
+                            <View>
+                                <Text style={[styles.title,{fontWeight: 'bold'}]}>{remaining}Km</Text>
+                            </View>
+                            <View style={{alignItems:'center'}}>
+                                <Text style={styles.h2}>Remaining</Text>
+                            </View>
+                        </View>
+
+                        <View style = {styles.SideBySideButtons}>
+                            <View style={styles.ButtonContainer}>
+                                <TouchableOpacity onPress={() => {
+                                setModalVisible(false)}}
+                                        style={[styles.StopButtonContainer, {width:100}]}>
+                                    <Text style={styles.h2}>BACK</Text>
+                                </TouchableOpacity>
+                            </View> 
+                            <View style={[styles.ButtonContainer, {paddingleft:10}]}>
+                            <TouchableOpacity onPress={() => {setModalVisible(!modalVisible); 
+                                setModalText();
+                                navigation.navigate('Trip Finished', {duration: time})}}
+                                        style={[styles.StartButtonContainer, {marginLeft:60, width:100}]}>
+                                    <Text style={styles.h2}>FINISH</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        
+                    </View>
+                </Modal>
             <HeadingContainer>
             <StyledTransitHeader>
                 In Transit
@@ -110,9 +129,9 @@ export const TransitScreen = ({ navigation, route }) => {
             </HeadingContainer>
             <MapContainer>
             <MapView style={styles.TransitMap} 
-            region={{
-                latitude: location.latitude,
-                longitude: location.longitude,
+            initialRegion={{
+                latitude: route.params.latitude,
+                longitude: route.params.longitude,
                 latitudeDelta: DEFAULTLONGLAT.longitudeDelta,
                 longitudeDelta: DEFAULTLONGLAT.latitudeDelta,
                 }
@@ -162,13 +181,13 @@ export const TransitScreen = ({ navigation, route }) => {
                 <View style={options.container}>
                     <Text style={styles.transitNumeral}>{remaining}Km</Text>
                     <InfoLabelContainer>
-                        <Text style={styles.h2}>Distance</Text>
+                        <Text style={styles.h2}>Remaining</Text>
                     </InfoLabelContainer>
                 </View>
             </InfoContainer>
 
         <View style={styles.ButtonContainer}>
-          <TouchableOpacity onPress={() => setModalVisible(true)}
+          <TouchableOpacity onPress={() => {setModalText("Finish Trip?");setModalVisible(true)}}
                 style={styles.StopButtonContainer}>
             <Text style={styles.h2}>STOP</Text>
           </TouchableOpacity>
