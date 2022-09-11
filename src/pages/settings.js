@@ -1,9 +1,10 @@
 import { Text, View, TouchableOpacity, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "../styles/styles";
 import { useSharedSettingState, SaveSettings } from "../context/context";
 import { SettingStyles } from "../components/settings.styles";
 import { TextStyles } from "../styles/typography";
+import { getSettings } from "../context/context";
 
 /**
  * Settings screen
@@ -14,10 +15,19 @@ import { TextStyles } from "../styles/typography";
  * @returns
  */
 export const SettingsScreen = ({ navigation, route }) => {
-  const { distance, setDistance } = useSharedSettingState();
-  const { alertMode, setAlertMode } = useSharedSettingState();
+  const [distance, setDistance] = useState();
+  const [alertMode, setAlertMode] = useState();
   const [number, onChangeNumber] = useState(distance);
-  const [vibrate, setVibrate] = useState(alertMode == "vibrate" ? true : false);
+  const [vibrate, setVibrate] = useState();
+
+  useEffect(() => {
+    getSettings().then((result) => {
+      setDistance(result.distance);
+      setAlertMode(result.alertMode);
+      onChangeNumber(result.distance);
+      setVibrate(result.alertMode == "vibrate" ? true : false);
+    });
+  }, []);
 
   return (
     <View style={styles.PageContainer}>

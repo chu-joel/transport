@@ -15,6 +15,7 @@ import { TransitStyles } from "../components/transit.styles";
 import { TextStyles } from "../styles/typography";
 import { ModalStyles } from "../components/modal.styles";
 import { ShapeDefaults } from "../styles/constants";
+import { getSettings } from "../context/context";
 
 // Generic css used in css page
 export const options = {
@@ -57,14 +58,13 @@ export const TransitScreen = ({ navigation, route }) => {
   const [time, setTime] = useState(0);
   const [modalText, setModalText] = useState("None");
   const [ringing, setRinging] = useState(false);
-  const { distance } = useSharedSettingState();
-  const { alertMode } = useSharedSettingState();
+  const [distance, setDistance] = useState();
+  const [alertMode, setAlertMode] = useState();
   const [sound, setSound] = useState();
   const [loading, setLoading] = useState(true);
 
   // Function to play sound if sound is selected
   async function playSound() {
-    console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(require("../Avicii.mp3"));
     setSound(sound);
 
@@ -73,6 +73,10 @@ export const TransitScreen = ({ navigation, route }) => {
 
   // Close loading screen after 1 second loading
   useEffect(() => {
+    getSettings().then((result) => {
+      setDistance(result.distance);
+      setAlertMode(result.alertMode);
+    });
     setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -136,7 +140,6 @@ export const TransitScreen = ({ navigation, route }) => {
           if (alertMode == "vibrate") {
             Vibration.vibrate(PATTERN, true);
           } else {
-            console.log("Ring now");
             playSound();
           }
           setRinging(true);
