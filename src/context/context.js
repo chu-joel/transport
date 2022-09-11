@@ -1,7 +1,6 @@
 import { useBetween } from "use-between";
 import { useState } from "react";
 import { getDatabase, ref, child, get, set } from "firebase/database";
-import { database } from "../firebase/firebase.config";
 
 /**
  * Read settings from json
@@ -25,6 +24,7 @@ const useSettingState = async () => {
   };
 };
 
+// Get Settings
 export const getSettings = async () => {
   const dbRef = ref(getDatabase());
   const thing = await get(child(dbRef, `settings/`))
@@ -41,6 +41,7 @@ export const getSettings = async () => {
   return thing;
 };
 
+// Save Settings
 export const SaveSettings = (distance, alertMethod) => {
   const database = getDatabase();
 

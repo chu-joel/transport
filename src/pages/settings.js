@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity, TextInput } from "react-native";
 import React, { useState, useEffect } from "react";
 import { styles } from "../styles/styles";
-import { useSharedSettingState, SaveSettings } from "../context/context";
+import { SaveSettings } from "../context/context";
 import { SettingStyles } from "../components/settings.styles";
 import { TextStyles } from "../styles/typography";
 import { getSettings } from "../context/context";
@@ -42,12 +42,14 @@ export const SettingsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.PageContainer}>
+      {/* Modal to display to user when retrieving data */}
       <Modal animationType={"fade"} isVisible={loading}>
         <View style={ModalStyles.LoadingModal}>
           <Text style={TextStyles.title}>Retrieving Settings...</Text>
           <Text style={TextStyles.h2}>Please Wait</Text>
         </View>
       </Modal>
+      {/* Modal to display to user when saving changes */}
       <Modal animationType={"fade"} isVisible={saving}>
         <View style={ModalStyles.LoadingModal}>
           <Text style={TextStyles.title}>Saving Changes...</Text>
