@@ -39,7 +39,7 @@ const MyStack = () => {
         
       }}
         >
-        <Tab.Screen options={{headerShown: false, unmountOnBlur: false}} name="Home"component={HomePage}/>
+        <Tab.Screen options={{headerShown: false, unmountOnBlur: false}} name="Transit"component={HomePage}/>
         <Tab.Screen options={{headerShown: false, unmountOnBlur: false}}  name="Settings" component={SettingsScreen}/>
       </Tab.Navigator>
     </NavigationContainer>

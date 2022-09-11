@@ -1,4 +1,4 @@
-import { SafeAreaView,TouchableOpacity, Platform, Text, View, Pressable, Modal, PermissionsAndroid, Vibration} from 'react-native';
+import { SafeAreaView,TouchableOpacity, Platform, Text, View, Pressable, PermissionsAndroid, Vibration} from 'react-native';
 import { styles, PageContainer } from '../styles/styles';
 import { HeadingContainer, ButtonContainer } from '../components/homeScreen.styles';
 import { StyledTransitHeader, InfoContainer, InfoLabelContainer, TextContainer } from '../components/transitScreen.styles';
@@ -11,8 +11,10 @@ import { Stopwatch } from 'react-native-stopwatch-timer';
 import * as Location from 'expo-location';
 import {getDistance} from 'geolib';
 import { useSharedSettingState } from '../context/context';
+import { Audio } from 'expo-av';
+import Modal from 'react-native-modal';
 
-const options = {
+export const options = {
     container: {
       backgroundColor: Colors.Grey80,
       padding: 10,
@@ -39,8 +41,27 @@ export const TransitScreen = ({ navigation, route }) => {
     const [time, setTime] = useState(0);
     const [ modalText, setModalText] = useState("None");
     const [ ringing, setRinging] = useState(false);
-    const {distance, setDistance} = useSharedSettingState();
-    const {alertMode, setAlertMode} = useSharedSettingState();
+    const {distance} = useSharedSettingState();
+    const {alertMode} = useSharedSettingState();
+    const [sound, setSound] = React.useState();
+
+    async function playSound() {
+        console.log('Loading Sound');
+        const { sound } = await Audio.Sound.createAsync(
+           require('../Avicii.mp3')
+        );
+        setSound(sound);
+    
+        await sound.playAsync(); }
+    
+      React.useEffect(() => {
+        return sound
+          ? () => {
+              sound.unloadAsync();
+              sound.stopAsync() }
+            
+          : undefined;
+      }, [sound]);
 
     const PATTERN = [
         3 * 1000,
@@ -74,38 +95,41 @@ export const TransitScreen = ({ navigation, route }) => {
     // Get location of user every second
     useEffect(() => {
         const interval = setInterval(() => {
+        if(!tripFinished){
             getLocation();
             setTime(time+1);
             
             // Check if user is within radius
             if(parseFloat(remaining)<parseFloat(distance) &&
-             remaining!="N/A" && !ringing){
-                Vibration.vibrate(PATTERN, true);
+                remaining!="N/A" && !ringing
+                && !modalVisible){
+                    // Check if set to vibrate
+                    if(alertMode=="vibrate"){
+                        Vibration.vibrate(PATTERN, true);
+                    }else{
+                        console.log("Ring now")
+                        playSound()
+                    }
+                
                 setRinging(true)
                 setModalText("Your stop is approaching");
                 setModalVisible(true);
+                }
             }
-        }, 1000);
+        }
+        , 1000);
         return () => clearInterval(interval);
     }, [time]);
-
-    
-
-
   
     return (
         getLocation,
         <PageContainer>
                 <Modal 
-                    backdropOpacity={1}
-            
-                Color={Colors.Black100}
-                    animationType="fade"
-                    transparent={true}
-                    // transparent={0.5}
-                    visible={modalVisible}
+                    isVisible={modalVisible}
+                    backdropOpacity={0.8}
+                    
+                    
                     onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                     }}
                 >
@@ -125,7 +149,9 @@ export const TransitScreen = ({ navigation, route }) => {
                             <View style={styles.ButtonContainer}>
                                 <TouchableOpacity onPress={() => {
                                 setModalVisible(false);
-                                Vibration.cancel();}
+                                Vibration.cancel();
+                                setSound(false)
+                            }
                             }
                                         style={[styles.StopButtonContainer, {width:100}]}>
                                     <Text style={styles.h2}>BACK</Text>
@@ -133,15 +159,15 @@ export const TransitScreen = ({ navigation, route }) => {
                             </View> 
                             <View style={[styles.ButtonContainer, {paddingleft:10}]}>
                             <TouchableOpacity onPress={() => {setModalVisible(!modalVisible); 
-                                setModalText();
+                                setTripFinished(true);
                                 Vibration.cancel();
+                                setSound(false)
                                 navigation.navigate('Trip Finished', {duration: time})}}
                                         style={[styles.StartButtonContainer, {marginLeft:60, width:100}]}>
                                     <Text style={styles.h2}>FINISH</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        
                     </View>
                 </Modal>
             <HeadingContainer>
@@ -160,13 +186,13 @@ export const TransitScreen = ({ navigation, route }) => {
             }>
                 <Marker 
                 coordinate={{
-                    latitude: route.params.latitude,
-                    longitude: route.params.longitude,
+                    latitude: location.latitude,
+                    longitude: location.longitude,
                 }}
                 />
                 <Circle fillColor={Colors.Blue100} center={{
-                    latitude: location.latitude,
-                    longitude: location.longitude,
+                    latitude: route.params.latitude,
+                    longitude: route.params.longitude,
                 }} radius={50}/>
                 <Polyline
                     coordinates={[
