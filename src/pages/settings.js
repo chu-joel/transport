@@ -7,6 +7,7 @@ import { TextStyles } from "../styles/typography";
 import { getSettings } from "../context/context";
 import Modal from "react-native-modal";
 import { ModalStyles } from "../components/modal.styles";
+import { initializeDb } from "../context/context";
 
 /**
  * Settings screen
@@ -25,13 +26,15 @@ export const SettingsScreen = ({ navigation, route }) => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    getSettings().then((result) => {
-      setDistance(result.distance);
-      setAlertMode(result.alertMode);
-      onChangeNumber(result.distance);
-      setVibrate(result.alertMode == "vibrate" ? true : false);
-      setLoading(false);
-    });
+    initializeDb().then(
+      getSettings().then((result) => {
+        setDistance(result.distance);
+        setAlertMode(result.alertMode);
+        onChangeNumber(result.distance);
+        setVibrate(result.alertMode == "vibrate" ? true : false);
+        setLoading(false);
+      })
+    );
   }, []);
 
   useEffect(() => {

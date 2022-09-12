@@ -1,6 +1,8 @@
 import { useBetween } from "use-between";
 import { useState } from "react";
 import { getDatabase, ref, child, get, set } from "firebase/database";
+import { initializeApp, getApp } from "firebase/app";
+import { firebaseConfig } from "../firebase/firebase.config";
 
 /**
  * Read settings from json
@@ -51,4 +53,12 @@ export const SaveSettings = (distance, alertMethod) => {
     distance: distance,
   });
   return 0;
+};
+
+export const initializeDb = async () => {
+  try {
+    getDatabase();
+  } catch (e) {
+    await initializeApp(firebaseConfig);
+  }
 };
